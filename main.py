@@ -9,7 +9,7 @@ import requests
 def load_proxies_from_url():
     try:
         response = requests.get(
-            "https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&protocol=http&proxy_format=protocolipport&format=text&timeout=20000")
+            "https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&proxy_format=protocolipport&format=text&anonymity=Elite&timeout=4999")
         response.raise_for_status()
         proxies = response.text.splitlines()
         return proxies
@@ -47,7 +47,7 @@ def send_post_request(url):
                 "https": selected_proxy
             }
 
-            response = requests.post(url, data=encoded_data, proxies=proxy_dict, timeout=3, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+            response = requests.post(url, data=encoded_data, proxies=proxy_dict, timeout=5, headers={'Content-Type': 'application/x-www-form-urlencoded'})
         else:
             response = requests.post(url, data=encoded_data, timeout=3, headers={'Content-Type': 'application/x-www-form-urlencoded'})
 
