@@ -36,8 +36,7 @@ def send_post_request(url):
     encoded_data = urllib.parse.urlencode(data)
     try:
 
-        if (useProxies):
-            proxies = load_proxies_from_url()
+        if useProxies:
             if not proxies:
                 print("No proxies found.")
                 return
@@ -64,10 +63,18 @@ if __name__ == "__main__":
     args = sys.argv[1:]
 
     useProxies = False
+    proxies = None
 
     if "--proxies" in args:
         useProxies = True
+        proxies = load_proxies_from_url()
+
+    last_proxy_reload = time.time()
 
     while 1:
+        if useProxies and (time.time() - last_proxy_reload) > 300: # 5min
+            proxies = load_proxies_from_url()
+            last_proxy_reload = time.time()
+
         send_post_request(url)
         time.sleep(1)
